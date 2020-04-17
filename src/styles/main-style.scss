@@ -50,12 +50,16 @@ body{
 .modal-submit-confirmation{
   position: relative;
   top:40%;
-  left:calc(50% - 200px);
+  left:calc(50% - 100px);
 }
 
 #modal-submit-confirmation-window {
   height:300px;
   width:300px;
+}
+
+#blank-doc-link:hover{
+  color: greenyellow;
 }
 
   // .add-booking-form-input{

@@ -167,7 +167,7 @@ class CreateLease extends React.Component {
             endDate: this.state.endDate,
             rentAmount: this.state.rentAmount,
             depositAmount: this.state.depositAmount,
-            includedFacilities: "",
+            includedFacilities:  $("#includedFacilities").val(),
             additionalObligations: this.state.additionalObligations,
             witnessName: this.state.witnessName,
             tenantAwareOfResidencyAct: this.state.tenantAwareOfResidencyAct,
@@ -176,7 +176,7 @@ class CreateLease extends React.Component {
             tenantSignatureData: this.state.tenantSignatureData,
             witnessSignatureData: this.state.witnessSignatureData
         };
-
+        console.log(data);
         axios({
             method: "POST",
             url: URL_PATH,
@@ -209,56 +209,7 @@ class CreateLease extends React.Component {
         });
 
     }
-
-    onSubmit = (e) => {
-        // console.log(this.state);
-        const body = JSON.stringify({
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            userName: this.state.userName,
-            userPassword: this.state.userPassword,
-            phoneNumber: this.state.phoneNumber,
-            employmentRole: this.state.employmentRole,
-            employmentStatus: this.state.employmentStatus,
-            createdBy: this.state.createdBy,
-            createdAt: this.state.createdAt,
-            createdOn: this.state.createdOn,
-            updatedBy: this.state.updatedBy,
-            updatedOn: this.state.updatedOn
-        });
-        console.log(body);
-
-        e.preventDefault();
-        // console.log(this.state);
-        fetch(API_HOST_ADDRESS + "/api/admin/create-user", {
-            method: 'POST',
-            body: body,
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        }).then(response => {
-            if (response.status == 200) {
-                this.setState({
-                    submitMessageClass: "align-self-center text-success"
-                });
-            } else {
-                this.setState({
-                    submitMessageClass: "align-self-center text-danger"
-                });
-            };
-            return response.text();
-        }).then((data) => {
-            this.setState({
-                submitMessageText: data
-            });
-        }).catch((err) => {
-            // console.log("Error", err)
-            this.setState({
-                submitMessageClass: "align-self-center text-danger",
-                submitMessageText: "Please try again later..."
-            });
-        });
-    }
+    
     render() {
         return (
             <div className="container">
@@ -386,6 +337,10 @@ class CreateLease extends React.Component {
                                     }
                                     focusedInput={this.state.focusedInput}
                                     onFocusChange={focusedInput => this.setState({ focusedInput })}
+                                    // orientation={"vertical"}
+                                    numberOfMonths={1}
+                                    displayFormat={"MMM DD, YYYY"}
+                                    isOutsideRange={()=>false}
                                 />
                             </div>
                         </div>
@@ -436,14 +391,14 @@ class CreateLease extends React.Component {
                                 id="includedFacilities"
                                 aria-describedby="includedFacilities"
                                 onChange={this.onChange}>
-                                <option selected={true} value="waterSupply"> Water Supply</option>
-                                <option selected={true} value="hotWaterSupply"> Hot Water Supply</option>
-                                <option selected={true} value="refrigerator"> Refrigerator</option>
-                                <option selected={true} value="furniture"> Furniture</option>
-                                <option selected={true} value="rangeAndOven"> Range and Oven</option>
-                                <option selected={true} value="electricity"> Electricity</option>
-                                <option selected={true} value="propertyTax"> Property Tax</option>
-                                <option selected={true} value="washerAndDryer"> Washer and Dryer</option>
+                                <option selected={true} value="Water Supply">Water Supply</option>
+                                <option selected={true} value="Hot Water Supply">Hot Water Supply</option>
+                                <option selected={true} value="Refrigerator">Refrigerator</option>
+                                <option selected={true} value="Furniture">Furniture</option>
+                                <option selected={true} value="Range and Oven">Range and Oven</option>
+                                <option selected={true} value="Electricity">Electricity</option>
+                                <option selected={true} value="Property Tax">Property Tax</option>
+                                <option selected={true} value="Washer and Dryer">Washer and Dryer</option>
                             </select>
                         </div>
                         <div className="form-group col-md-6">
@@ -485,7 +440,7 @@ class CreateLease extends React.Component {
                     <div className="form-row">
                         <div className="form-group col">
                             <label className="font-weight-bold form-label-dark"> Signature of the Landlord </label>
-                            <div className="d-flex">
+                            <div className="d-flex flex-column flex-md-row">
                                 <SignatureCanvas
                                     className="form-control"
                                     penColor='black'
@@ -494,7 +449,7 @@ class CreateLease extends React.Component {
                                     onEnd={this.handleSignatureData}
                                 />
                                 <div className="d-flex align-items-center p-2">
-                                    <button className="btn btn-sm form-bg form-label-light" onClick={this.clearSigPanelLandlord}>
+                                    <button className="btn btn-sm btn-block form-bg form-label-light" onClick={this.clearSigPanelLandlord}>
                                         Clear
                                 </button>
                                 </div>
@@ -505,7 +460,7 @@ class CreateLease extends React.Component {
                     <div className="form-row">
                         <div className="form-group col">
                             <label className="font-weight-bold form-label-dark"> Signature of the Tenant </label>
-                            <div className="d-flex">
+                            <div className="d-flex flex-column flex-md-row">
                                 <SignatureCanvas
                                     className="form-control"
                                     penColor='black'
@@ -514,7 +469,7 @@ class CreateLease extends React.Component {
                                     onEnd={this.handleSignatureData}
                                 />
                                 <div className="d-flex align-items-center p-2">
-                                    <button className="btn btn-sm form-bg form-label-light" onClick={this.clearSigPanelTenant}>
+                                    <button className="btn btn-sm btn-block form-bg form-label-light" onClick={this.clearSigPanelTenant}>
                                         Clear
                                 </button>
                                 </div>
@@ -538,7 +493,7 @@ class CreateLease extends React.Component {
                     <div className="form-row">
                         <div className="form-group col">
                             <label className="font-weight-bold form-label-dark"> Signature of the Witness </label>
-                            <div className="d-flex">
+                            <div className="d-flex flex-column flex-md-row">
                                 <SignatureCanvas
                                     className="form-control"
                                     penColor='black'
@@ -547,7 +502,7 @@ class CreateLease extends React.Component {
                                     onEnd={this.handleSignatureData}
                                 />
                                 <div className="d-flex align-items-center p-2">
-                                    <button className="btn btn-sm form-bg form-label-light" onClick={this.clearSigPanelWitness}>
+                                    <button className="btn btn-sm btn-block form-bg form-label-light" onClick={this.clearSigPanelWitness}>
                                         Clear
                                         </button>
                                 </div>
