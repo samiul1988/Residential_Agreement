@@ -48,6 +48,6 @@
   },
   "devDependencies": {
     "@babel/core": "7.6.4",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.12"
   }
 }
